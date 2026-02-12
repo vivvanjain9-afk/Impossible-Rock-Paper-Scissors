@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Impossible Rock Paper Scissors</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            max-width: 600px;
+            width: 90%;
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+        
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+        }
+        
+        .input-section {
+            margin-bottom: 30px;
+        }
+        
+        input {
+            width: 100%;
+            padding: 12px;
+            font-size: 1em;
+            border: 2px solid #667eea;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            transition: border-color 0.3s;
+        }
+        
+        input:focus {
+            outline: none;
+            border-color: #764ba2;
+        }
+        
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 12px 30px;
+            font-size: 1em;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        
+        button:hover {
+            transform: scale(1.05);
+        }
+        
+        button:active {
+            transform: scale(0.95);
+        }
+        
+        .buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+        
+        .btn-choice {
+            flex: 1;
+            padding: 15px;
+            font-size: 1.1em;
+            background: #f0f0f0;
+            color: #333;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-choice:hover {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+        
+        .result {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            min-height: 120px;
+            display: none;
+        }
+        
+        .result.show {
+            display: block;
+        }
+        
+        .result-text {
+            font-size: 1.1em;
+            color: #333;
+            margin: 10px 0;
+        }
+        
+        .result-title {
+            font-weight: bold;
+            font-size: 1.3em;
+            color: #764ba2;
+            margin-bottom: 15px;
+        }
+        
+        .win-message {
+            color: #4caf50;
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+        
+        .hint {
+            color: #999;
+            font-size: 0.9em;
+            margin-top: 20px;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎮 Impossible Rock Paper Scissors</h1>
+        <p class="subtitle">Try Winning...</p>
+        
+        <div class="input-section">
+            <input type="text" id="userInput" placeholder="Enter your choice or try 'win'..." autocomplete="off">
+            <button onclick="playGame()">Play</button>
+        </div>
+        
+        <div class="buttons">
+            <div class="btn-choice" onclick="quickPlay('rock')">🪨 Rock</div>
+            <div class="btn-choice" onclick="quickPlay('paper')">📄 Paper</div>
+            <div class="btn-choice" onclick="quickPlay('scissors')">✂️ Scissors</div>
+        </div>
+        
+        <div class="result" id="result">
+            <div class="result-title">Result</div>
+            <div class="result-text">Your choice: <strong id="yourChoice"></strong></div>
+            <div class="result-text">Computer's choice: <strong id="computerChoice"></strong></div>
+            <div class="result-text" id="outcome"></div>
+            <div id="winMessage" class="win-message" style="display: none;">🎉 Finally, you figured out the forbidden word, you won! 🎉</div>
+        </div>
+        
+        <p class="hint">💡 Hint: There's a secret word that lets you win...</p>
+    </div>
+
+    <script>
+        let attempts = 0;
+
+        function quickPlay(choice) {
+            document.getElementById('userInput').value = choice;
+            playGame();
+        }
+
+        function playGame() {
+            const userInput = document.getElementById('userInput').value.toLowerCase().trim();
+            
+            if (!userInput) {
+                alert('Please enter a choice!');
+                return;
+            }
+
+            attempts++;
+            const result = document.getElementById('result');
+            const winMessage = document.getElementById('winMessage');
+            
+            winMessage.style.display = 'none';
+
+            if (userInput === 'win') {
+                document.getElementById('yourChoice').textContent = userInput;
+                document.getElementById('computerChoice').textContent = 'N/A';
+                document.getElementById('outcome').textContent = 'You found the secret word!';
+                winMessage.style.display = 'block';
+                result.classList.add('show');
+                return;
+            }
+
+            let computerChoice = '';
+            let normalizedInput = userInput;
+
+            if (normalizedInput === 'rock') {
+                computerChoice = 'Paper';
+            } else if (normalizedInput === 'paper') {
+                computerChoice = 'Scissors';
+            } else if (normalizedInput === 'scissors') {
+                computerChoice = 'Rock';
+            } else {
+                document.getElementById('outcome').textContent = 'Invalid choice! Try rock, paper, or scissors.';
+                result.classList.add('show');
+                return;
+            }
+
+            document.getElementById('yourChoice').textContent = normalizedInput;
+            document.getElementById('computerChoice').textContent = computerChoice;
+            document.getElementById('outcome').textContent = 'The computer [always] wins!';
+            result.classList.add('show');
+
+            if (attempts === 10) {
+                setTimeout(() => alert('So you see, you can never win, unless you use the forbidden method!'), 500);
+            }
+            if (attempts === 20) {
+                setTimeout(() => alert('The forbidden word is: win'), 500);
+            }
+        }
+
+        document.getElementById('userInput').addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                playGame();
+            }
+        });
+    </script>
+</body>
+</html>
