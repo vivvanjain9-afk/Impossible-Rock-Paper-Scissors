@@ -151,14 +151,8 @@
         <p class="subtitle">Try Winning...</p>
         
         <div class="input-section">
-            <input type="text" id="userInput" placeholder="Enter your choice or try 'win'..." autocomplete="off">
+            <input type="text" id="userInput" placeholder="Enter your choice..." autocomplete="off">
             <button onclick="playGame()">Play</button>
-        </div>
-        
-        <div class="buttons">
-            <div class="btn-choice" onclick="quickPlay('rock')">🪨 Rock</div>
-            <div class="btn-choice" onclick="quickPlay('paper')">📄 Paper</div>
-            <div class="btn-choice" onclick="quickPlay('scissors')">✂️ Scissors</div>
         </div>
         
         <div class="result" id="result">
@@ -168,17 +162,11 @@
             <div class="result-text" id="outcome"></div>
             <div id="winMessage" class="win-message" style="display: none;">🎉 Finally, you figured out the forbidden word, you won! 🎉</div>
         </div>
-        
-        <p class="hint">💡 Hint: There's a secret word that lets you win...</p>
+
     </div>
 
     <script>
         let attempts = 0;
-
-        function quickPlay(choice) {
-            document.getElementById('userInput').value = choice;
-            playGame();
-        }
 
         function playGame() {
             const userInput = document.getElementById('userInput').value.toLowerCase().trim();
